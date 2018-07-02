@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EchoDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="correctAnswer" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Participant">
+          <Key>
+            <PropertyRef Name="participant_id" />
+          </Key>
+          <Property Name="participant_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="session_id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="phoneNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParticipantName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="facility" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParticipantAnswer">
+          <Key>
+            <PropertyRef Name="participant_id" />
+          </Key>
+          <Property Name="participant_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="phoneNumber" Type="varchar" MaxLength="50" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="answer" Type="varchar" MaxLength="50" />
+          <Property Name="score" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Participa__parti__693CA210">
+          <End Role="Participant" Type="Self.Participant" Multiplicity="1" />
+          <End Role="ParticipantAnswer" Type="Self.ParticipantAnswer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Participant">
+              <PropertyRef Name="participant_id" />
+            </Principal>
+            <Dependent Role="ParticipantAnswer">
+              <PropertyRef Name="participant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EchoDbModelStoreContainer">
+          <EntitySet Name="Answer" EntityType="Self.Answer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Participant" EntityType="Self.Participant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParticipantAnswer" EntityType="Self.ParticipantAnswer" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Participa__parti__693CA210" Association="Self.FK__Participa__parti__693CA210">
+            <End Role="Participant" EntitySet="Participant" />
+            <End Role="ParticipantAnswer" EntitySet="ParticipantAnswer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EchoDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="EchoDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Participants" EntityType="EchoDbModel.Participant" />
+          <EntitySet Name="ParticipantAnswers" EntityType="EchoDbModel.ParticipantAnswer" />
+          <AssociationSet Name="FK__Participa__parti__693CA210" Association="EchoDbModel.FK__Participa__parti__693CA210">
+            <End Role="Participant" EntitySet="Participants" />
+            <End Role="ParticipantAnswer" EntitySet="ParticipantAnswers" />
+          </AssociationSet>
+          <EntitySet Name="Answers" EntityType="EchoDbModel.Answer" />
+        </EntityContainer>
+        <EntityType Name="Participant">
+          <Key>
+            <PropertyRef Name="participant_id" />
+          </Key>
+          <Property Name="participant_id" Type="Guid" Nullable="false" />
+          <Property Name="session_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="phoneNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipantName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="facility" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ParticipantAnswer" Relationship="EchoDbModel.FK__Participa__parti__693CA210" FromRole="Participant" ToRole="ParticipantAnswer" />
+        </EntityType>
+        <EntityType Name="ParticipantAnswer">
+          <Key>
+            <PropertyRef Name="participant_id" />
+          </Key>
+          <Property Name="participant_id" Type="Guid" Nullable="false" />
+          <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="score" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Participant" Relationship="EchoDbModel.FK__Participa__parti__693CA210" FromRole="ParticipantAnswer" ToRole="Participant" />
+        </EntityType>
+        <Association Name="FK__Participa__parti__693CA210">
+          <End Type="EchoDbModel.Participant" Role="Participant" Multiplicity="1" />
+          <End Type="EchoDbModel.ParticipantAnswer" Role="ParticipantAnswer" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Participant">
+              <PropertyRef Name="participant_id" />
+            </Principal>
+            <Dependent Role="ParticipantAnswer">
+              <PropertyRef Name="participant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Answer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="correctAnswer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EchoDbModelStoreContainer" CdmEntityContainer="EchoDbEntities">
+          <EntitySetMapping Name="Participants">
+            <EntityTypeMapping TypeName="EchoDbModel.Participant">
+              <MappingFragment StoreEntitySet="Participant">
+                <ScalarProperty Name="facility" ColumnName="facility" />
+                <ScalarProperty Name="ParticipantName" ColumnName="ParticipantName" />
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+                <ScalarProperty Name="session_id" ColumnName="session_id" />
+                <ScalarProperty Name="participant_id" ColumnName="participant_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParticipantAnswers">
+            <EntityTypeMapping TypeName="EchoDbModel.ParticipantAnswer">
+              <MappingFragment StoreEntitySet="ParticipantAnswer">
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="answer" ColumnName="answer" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+                <ScalarProperty Name="participant_id" ColumnName="participant_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Answers">
+            <EntityTypeMapping TypeName="EchoDbModel.Answer">
+              <MappingFragment StoreEntitySet="Answer">
+                <ScalarProperty Name="correctAnswer" ColumnName="correctAnswer" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
